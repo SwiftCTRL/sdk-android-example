@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ScrollView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
@@ -17,7 +16,6 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.swiftctrl.android.databinding.FragmentTestBinding
-import com.swiftctrl.sdk.SwiftCtrlCallback
 import com.swiftctrl.sdk.SwiftCtrlFullCallback
 import com.swiftctrl.sdk.connector.SwiftCtrlClient
 import com.swiftctrl.sdk.connector.SwiftCtrlLifecycleClient
@@ -51,7 +49,6 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
             Log.INFO -> R.color.info
             Log.WARN -> R.color.warning
             else -> android.R.color.black
-
         }
         return ContextCompat.getColor(requireContext(), colorId)
     }
@@ -88,8 +85,8 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         }
     }
 
-    private fun initialState(isError:Boolean = false){
-        if( binding.fragmentTestConnect.text != getString(R.string.disconnected)) {
+    private fun initialState(isError: Boolean = false) {
+        if (binding.fragmentTestConnect.text != getString(R.string.disconnected)) {
             binding.fragmentTestRegister.isChecked = false
             binding.fragmentTestRegister.isEnabled = false
             if (isError) {
@@ -114,7 +111,6 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
     }
 
     override fun onSwiftCtrlAuthSuccess() {
-
     }
 
     override fun onSwiftCtrlAuthClosed() {
@@ -131,7 +127,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
     override fun onSwiftCtrlCrypto(text: String) {
         val bitmap = getQRFromText(text)
         binding.fragmentTestQrText.setText(text)
-        binding.fragmentTestTimestamp.setText( SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()) )
+        binding.fragmentTestTimestamp.setText(SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()))
         binding.fragmentTestQr.setImageBitmap(bitmap)
     }
 

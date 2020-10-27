@@ -24,7 +24,7 @@ class MainPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapte
         return true
     }
 
-    override fun getItemViewType(position: Int): Int =if (position == 0) {
+    override fun getItemViewType(position: Int): Int = if (position == 0) {
         Const.TEST_TYPE_MANUAL
     } else {
         Const.TEST_TYPE_AUTO

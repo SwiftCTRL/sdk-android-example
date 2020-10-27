@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayoutMediator
 import com.swiftctrl.android.databinding.ActivityMainBinding
-import com.swiftctrl.sdk.connector.SwiftCtrlManualClient
 import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
@@ -30,10 +29,10 @@ class MainActivity : AppCompatActivity() {
         adapter = MainPagerAdapter(this)
         binding.activityMainPager.adapter = adapter
         TabLayoutMediator(binding.activityMainTabs, binding.activityMainPager) { tab, position ->
-            tab.text = if( adapter.getItemViewType(position) == Const.TEST_TYPE_MANUAL ) {
-                getString(R.string.tab_title_manual, position+1)
-            }else{
-                getString(R.string.tab_title_auto, position+1)
+            tab.text = if (adapter.getItemViewType(position) == Const.TEST_TYPE_MANUAL) {
+                getString(R.string.tab_title_manual, position + 1)
+            } else {
+                getString(R.string.tab_title_auto, position + 1)
             }
         }.attach()
 
