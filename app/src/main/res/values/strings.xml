@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SwiftCTRL</string>
+    <string name="license">4ee46d84-d5c3-4c9e-a038-4f57774adb10</string>
+    <string name="secret">4f8972c9-5b13-4b56-b939-23683578ff37</string>
+    <string name="add">add</string>
+    <string name="hint_main_add">No test yet :(\nplease click the \"add\" button\nat the top right corner</string>
+    <string name="remove">Remove</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="connecting">Connecting...</string>
+    <string name="connected">Connected !</string>
+    <string name="registered">Registered</string>
+    <string name="unregistered">Unregistered</string>
+    <string name="tab_title_manual">Test #%d (Manual)</string>
+    <string name="tab_title_auto">Test #%d (Auto)</string>
+    <string name="error">Error</string>
+</resources>

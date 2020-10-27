@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1565C0</color>
+    <color name="colorPrimaryDark">#283593</color>
+    <color name="colorAccent">#FFD600</color>
+
+
+    <color name="debug">#2196F3</color>
+
+    <color name="error">#F44336</color>
+
+    <color name="info">#4CAF50</color>
+
+    <color name="warning">#FFC107</color>
+</resources>
