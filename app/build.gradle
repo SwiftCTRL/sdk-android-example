@@ -40,8 +40,8 @@ configurations {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // SWIFTCTRL SDK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -73,7 +73,6 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$picassoVersion"
     implementation "com.jakewharton.picasso:picasso2-okhttp3-downloader:$picassoOkHttpVersion"
 
-
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // SUPPORT & DEBUG
 
@@ -88,7 +87,15 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$canaryVersion"
 
     // KT lint
-    ktlint "com.github.shyiko:ktlint:$ktlintVersion"
+    ktlint "com.pinterest:ktlint:$ktlintVersion"
+
+    // QuickLib
+    implementation "com.quicklib:quicklib-core:$quicklibVersion"
+    implementation "com.quicklib:quicklib-app:$quicklibVersion"
+
+    // QR Codes
+    // implementation "com.github.kenglxn.QRGen:javase:2.6.0"
+    implementation "com.google.zxing:core:3.3.0"
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -101,6 +108,7 @@ dependencies {
     // Unit
     testImplementation 'junit:junit:4.12'
 }
+
 
 // KT lint tasks------------------------------------------------------------------------------------
 task ktlint(type: JavaExec, group: "verification") {
