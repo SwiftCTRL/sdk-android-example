@@ -1,6 +1,8 @@
 package com.swiftctrl.android
 
 object Const {
+    const val KEY_USER_TOKEN = "userToken"
+    const val KEY_SYSTEM_TOKEN = "systemToken"
     const val KEY_TYPE = "type"
     const val KEY_INDEX = "index"
 

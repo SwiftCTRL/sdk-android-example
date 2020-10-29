@@ -13,7 +13,7 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-
+apply from: 'artifactory.gradle'
 allprojects {
     repositories {
         mavenLocal()
@@ -21,6 +21,13 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots'}
+        maven {
+            url "https://swiftctrl.jfrog.io/artifactory/libs-release-local/"
+            credentials {
+                username = "$artifactory_username"
+                password = "$artifactory_password"
+            }
+        }
     }
 }
 

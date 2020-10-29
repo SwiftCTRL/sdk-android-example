@@ -1,22 +1,20 @@
 package com.swiftctrl.android
 
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.WriterException
 import com.swiftctrl.android.databinding.FragmentTestBinding
 import com.swiftctrl.sdk.SwiftCtrlFullCallback
+import com.swiftctrl.sdk.SwiftCtrlSDK
 import com.swiftctrl.sdk.connector.SwiftCtrlClient
 import com.swiftctrl.sdk.connector.SwiftCtrlLifecycleClient
 import com.swiftctrl.sdk.connector.SwiftCtrlManualClient
@@ -63,19 +61,34 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         this.type = arguments?.getInt(Const.KEY_TYPE) ?: Const.TEST_TYPE_AUTO
 
         initialState()
-        if (type == Const.TEST_TYPE_MANUAL) {
-            client = SwiftCtrlManualClient(requireContext(), getString(R.string.license), getString(R.string.secret), this)
-            binding.fragmentTestConnect.setOnClickListener {
-                if (client.isConnected()) {
-                    (client as SwiftCtrlManualClient).disconnect()
-                } else {
-                    (client as SwiftCtrlManualClient).connect()
+        AppDependency.getToken(
+            requireContext(), getString(R.string.license), getString(R.string.secret), 12345,
+            object : SwiftCtrlSDK.AuthCallback {
+                override fun onSuccess(token: String) {
+
+                    if (type == Const.TEST_TYPE_MANUAL) {
+                        client = SwiftCtrlManualClient(requireContext(), token, this@TestFragment)
+                        binding.fragmentTestConnect.setOnClickListener {
+                            if (client.isConnected()) {
+                                (client as SwiftCtrlManualClient).disconnect()
+                            } else {
+                                (client as SwiftCtrlManualClient).connect()
+                            }
+                        }
+                    } else {
+                        client = SwiftCtrlLifecycleClient(this@TestFragment, token, this@TestFragment)
+                    }
+                    binding.fragmentTestType.text = client::class.java.simpleName
+                    binding.fragmentTestConnect.isEnabled = true
+                }
+
+                override fun onError(e: Throwable) {
+                    binding.fragmentTestConnect.isEnabled = false
+                    Toast.makeText(requireContext(), R.string.error_authentication, Toast.LENGTH_SHORT).show()
                 }
             }
-        } else {
-            client = SwiftCtrlLifecycleClient(this, getString(R.string.license), getString(R.string.secret), this)
-        }
-        binding.fragmentTestType.text = client::class.java.simpleName
+        )
+
         binding.fragmentTestRegister.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 client.registerCryptoFeed()
@@ -100,11 +113,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         }
     }
 
-    override fun onSwiftCtrlConnected() {
-        binding.fragmentTestConnect.iconTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark))
-        binding.fragmentTestConnect.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark))
-        binding.fragmentTestConnect.setText(R.string.connecting)
-    }
+
 
     override fun onSwiftCtrlDisconnected() {
         initialState()
@@ -117,6 +126,12 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         initialState()
     }
 
+    override fun onSwiftCtrlConnecting() {
+        binding.fragmentTestConnect.iconTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark))
+        binding.fragmentTestConnect.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark))
+        binding.fragmentTestConnect.setText(R.string.connecting)
+    }
+
     override fun onSwiftCtrlReady() {
         binding.fragmentTestConnect.iconTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark))
         binding.fragmentTestConnect.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark))
@@ -125,7 +140,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
     }
 
     override fun onSwiftCtrlCrypto(text: String) {
-        val bitmap = getQRFromText(text)
+        val bitmap = Utils.getQRFromText(requireContext(), text)
         binding.fragmentTestQrText.setText(text)
         binding.fragmentTestTimestamp.setText(SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()))
         binding.fragmentTestQr.setImageBitmap(bitmap)
@@ -149,30 +164,5 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
             (client as SwiftCtrlManualClient).disconnect()
         }
         Timber.uproot(tree)
-    }
-
-    @Throws(WriterException::class)
-    private fun getQRFromText(Value: String): Bitmap? {
-        val bitMatrix = try {
-            MultiFormatWriter().encode(
-                Value,
-                BarcodeFormat.QR_CODE,
-                500, 500, null
-            )
-        } catch (Illegalargumentexception: IllegalArgumentException) {
-            return null
-        }
-        val bitMatrixWidth = bitMatrix.width
-        val bitMatrixHeight = bitMatrix.height
-        val pixels = IntArray(bitMatrixWidth * bitMatrixHeight)
-        for (y in 0 until bitMatrixHeight) {
-            val offset = y * bitMatrixWidth
-            for (x in 0 until bitMatrixWidth) {
-                pixels[offset + x] = if (bitMatrix[x, y]) ContextCompat.getColor(requireContext(), R.color.colorPrimary) else ContextCompat.getColor(requireContext(), android.R.color.white)
-            }
-        }
-        val bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_4444)
-        bitmap.setPixels(pixels, 0, 500, 0, 0, bitMatrixWidth, bitMatrixHeight)
-        return bitmap
     }
 }
