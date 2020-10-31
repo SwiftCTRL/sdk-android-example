@@ -24,6 +24,7 @@ import java.util.*
 
 class TestFragment : Fragment(), SwiftCtrlFullCallback {
 
+    private val userId = 37
     private var type: Int = Const.TEST_TYPE_AUTO
     private lateinit var client: SwiftCtrlClient
     private lateinit var binding: FragmentTestBinding
@@ -62,7 +63,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
 
         initialState()
         AppDependency.getToken(
-            requireContext(), getString(R.string.license), getString(R.string.secret), 12345,
+            requireContext(), getString(R.string.license), getString(R.string.secret), userId,
             object : SwiftCtrlSDK.AuthCallback {
                 override fun onSuccess(token: String) {
 
@@ -89,6 +90,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
             }
         )
 
+        binding.fragmentTestUserid.text = getString(R.string.user_id, userId)
         binding.fragmentTestRegister.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 client.registerCryptoFeed()
@@ -99,20 +101,22 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
     }
 
     private fun initialState(isError: Boolean = false) {
-        if (binding.fragmentTestConnect.text != getString(R.string.disconnected)) {
-            binding.fragmentTestRegister.isChecked = false
-            binding.fragmentTestRegister.isEnabled = false
-            if (isError) {
-                binding.fragmentTestConnect.iconTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
-                binding.fragmentTestConnect.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
-            } else {
-                binding.fragmentTestConnect.iconTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.black))
-                binding.fragmentTestConnect.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.black))
+        activity?.let {
+            if (binding.fragmentTestConnect.text != getString(R.string.disconnected)) {
+                binding.fragmentTestRegister.isChecked = false
+                binding.fragmentTestRegister.isEnabled = false
+                if (isError) {
+                    binding.fragmentTestConnect.iconTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
+                    binding.fragmentTestConnect.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
+                } else {
+                    binding.fragmentTestConnect.iconTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.black))
+                    binding.fragmentTestConnect.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.black))
+                }
+                binding.fragmentTestConnect.setText(R.string.disconnected)
             }
-            binding.fragmentTestConnect.setText(R.string.disconnected)
         }
-    }
 
+    }
 
 
     override fun onSwiftCtrlDisconnected() {
