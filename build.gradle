@@ -5,6 +5,13 @@ buildscript {
         mavenLocal()
         google()
         jcenter()
+	maven {
+            url artifactory_repo_url
+            credentials {
+                username = artifactory_username
+                password = artifactory_password
+            }
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.2'
@@ -21,11 +28,11 @@ allprojects {
         jcenter()
         maven { url "https://jitpack.io" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots'}
-        maven {
-            url "https://swiftctrl.jfrog.io/artifactory/libs-release-local/"
+	maven {
+            url artifactory_repo_url
             credentials {
-                username = "$artifactory_username"
-                password = "$artifactory_password"
+                username = artifactory_username
+                password = artifactory_password
             }
         }
     }

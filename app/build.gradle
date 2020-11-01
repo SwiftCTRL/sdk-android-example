@@ -27,10 +27,22 @@ android {
     buildFeatures {
         viewBinding true
     }
+    signingConfigs {
+        config {
+            keyAlias cert_key_alias
+            keyPassword cert_key_password
+            storeFile file(cert_keystore_path)
+            storePassword cert_keystore_password
+        }
+    }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.config
         }
     }
 }
@@ -38,14 +50,14 @@ configurations {
     ktlint
 }
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // SWIFTCTRL SDK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    implementation "com.swiftctrl:swiftctrl-sdk:1.0"
+     implementation "com.swiftctrl:swiftctrl-sdk:1.0"
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,6 +87,10 @@ dependencies {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // SUPPORT & DEBUG
+
+    // JWT Token
+    implementation 'com.auth0.android:jwtdecode:2.0.0'
+
 
     // Timber
     implementation "com.jakewharton.timber:timber:$timberVersion"
