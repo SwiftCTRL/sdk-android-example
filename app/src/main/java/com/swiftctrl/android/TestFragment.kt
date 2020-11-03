@@ -10,7 +10,6 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorInt
-import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
@@ -21,7 +20,6 @@ import com.swiftctrl.sdk.connector.SwiftCtrlClient
 import com.swiftctrl.sdk.connector.SwiftCtrlLifecycleClient
 import com.swiftctrl.sdk.connector.SwiftCtrlManualClient
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.util.*
 
 class TestFragment : Fragment(), SwiftCtrlFullCallback {
@@ -38,10 +36,9 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
                 row.text = message
                 row.setTextColor(getTextColor(priority))
                 binding.fragmentTestLogContainer.addView(row)
-                if(autoScroll){
+                if (autoScroll) {
                     binding.fragmentTestScroll.fullScroll(ScrollView.FOCUS_DOWN)
                 }
-
             }
         }
     }
@@ -106,7 +103,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         }
         binding.fragmentTestAutoscroll.setOnCheckedChangeListener { buttonView, isChecked ->
             autoScroll = isChecked
-            if(isChecked){
+            if (isChecked) {
                 binding.fragmentTestScroll.fullScroll(ScrollView.FOCUS_DOWN)
             }
         }
