@@ -17,6 +17,8 @@ class DemoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDemoBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        showLogin()
     }
 
     fun showQrCode(userToken: String) {
@@ -24,5 +26,9 @@ class DemoActivity : AppCompatActivity() {
             this.arguments = bundleOf(Const.KEY_USER_TOKEN to userToken)
         }
         supportFragmentManager.beginTransaction().replace(R.id.activity_demo_root, fragment).commit()
+    }
+
+    fun showLogin() {
+        supportFragmentManager.beginTransaction().replace(R.id.activity_demo_root, LoginFragment()).commit()
     }
 }

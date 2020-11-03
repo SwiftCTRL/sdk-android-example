@@ -22,6 +22,10 @@ class QrFragment : Fragment(), SwiftCtrlCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         client = SwiftCtrlLifecycleClient(this, requireContext(), arguments?.getString(Const.KEY_USER_TOKEN) ?: "", this)
+        binding.fragmentQrClose.setOnClickListener {
+            client.unregisterCryptoFeed()
+            (requireActivity() as DemoActivity).showLogin()
+        }
     }
 
     override fun onSwiftCtrlReady() {
@@ -29,7 +33,7 @@ class QrFragment : Fragment(), SwiftCtrlCallback {
     }
 
     override fun onSwiftCtrlCrypto(text: String) {
-        val bitmap = Utils.getQRFromText(requireContext(), text)
+        val bitmap = Utils.getQRFromText(requireContext(), text, android.R.color.black)
         binding.fragmentQrImage.setImageBitmap(bitmap)
     }
 

@@ -6,11 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.Fragment
 import com.swiftctrl.android.databinding.FragmentTestBinding
 import com.swiftctrl.sdk.SwiftCtrlFullCallback
@@ -24,6 +26,7 @@ import java.util.*
 
 class TestFragment : Fragment(), SwiftCtrlFullCallback {
 
+    private var autoScroll = true
     private val userId = 37
     private var type: Int = Const.TEST_TYPE_AUTO
     private lateinit var client: SwiftCtrlClient
@@ -35,7 +38,10 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
                 row.text = message
                 row.setTextColor(getTextColor(priority))
                 binding.fragmentTestLogContainer.addView(row)
-                binding.fragmentTestScroll.scrollTo(0, binding.fragmentTestScroll.bottom)
+                if(autoScroll){
+                    binding.fragmentTestScroll.fullScroll(ScrollView.FOCUS_DOWN)
+                }
+
             }
         }
     }
@@ -98,6 +104,12 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
                 client.unregisterCryptoFeed()
             }
         }
+        binding.fragmentTestAutoscroll.setOnCheckedChangeListener { buttonView, isChecked ->
+            autoScroll = isChecked
+            if(isChecked){
+                binding.fragmentTestScroll.fullScroll(ScrollView.FOCUS_DOWN)
+            }
+        }
     }
 
     private fun initialState(isError: Boolean = false) {
@@ -115,9 +127,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
                 binding.fragmentTestConnect.setText(R.string.disconnected)
             }
         }
-
     }
-
 
     override fun onSwiftCtrlDisconnected() {
         initialState()
@@ -128,6 +138,20 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
 
     override fun onSwiftCtrlAuthClosed() {
         initialState()
+    }
+
+    override fun onQrValidated(valid: Boolean) {
+        val color = if (valid) {
+            binding.fragmentTestQrValid.text = getString(R.string.qr_valid)
+            binding.fragmentTestQrValid.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_thumb_up, 0)
+            ContextCompat.getColor(requireContext(), android.R.color.holo_green_dark)
+        } else {
+            binding.fragmentTestQrValid.text = getString(R.string.qr_not_valid)
+            binding.fragmentTestQrValid.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_thumb_down, 0)
+            ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark)
+        }
+        binding.fragmentTestQrValid.setTextColor(color)
+        TextViewCompat.setCompoundDrawableTintList(binding.fragmentTestQrValid, ColorStateList.valueOf(color))
     }
 
     override fun onSwiftCtrlConnecting() {
@@ -145,16 +169,13 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
 
     override fun onSwiftCtrlCrypto(text: String) {
         val bitmap = Utils.getQRFromText(requireContext(), text)
-        binding.fragmentTestQrText.setText(text)
-        binding.fragmentTestTimestamp.setText(SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date()))
         binding.fragmentTestQr.setImageBitmap(bitmap)
+
+        client.validate(text)
     }
 
     override fun onSwiftCtrlError(test: String, e: Exception?) {
-        initialState(true)
-        AlertDialog.Builder(requireActivity()).setMessage(test).setTitle(R.string.error).setNegativeButton(R.string.ok) { dialog, id ->
-            dialog.dismiss()
-        }.create().show()
+        Toast.makeText(requireContext(), test, Toast.LENGTH_LONG).show()
     }
 
     override fun onStart() {

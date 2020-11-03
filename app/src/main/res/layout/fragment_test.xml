@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/fragment_test_type"
         tools:text="Connecting..." />
 
-    <androidx.appcompat.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/fragment_test_register"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -59,24 +59,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/fragment_test_connect" />
 
-    <TextView
-        android:id="@+id/fragment_test_timestamp"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/fragment_test_qr_valid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_test_register"
-        tools:text="2020-10-20 07:30:25" />
-
-    <TextView
-        android:id="@+id/fragment_test_qr_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:gravity="center"
+        tools:drawableEnd="@drawable/ic_thumb_up"
+        tools:text="@string/qr_valid"
+        android:padding="@dimen/spacing_medium"
+        android:drawablePadding="@dimen/spacing_medium"
+        android:drawableTint="@android:color/holo_green_dark"
+        android:textColor="@android:color/holo_green_dark"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_test_timestamp"
-        tools:text="dsjfdskhfdslkjfhldskjfhlkjhqeljheiwuhedajshnclkjdsbvlkdjhrlekwjsdbnfckjxbvlfkdjsbflkjebf" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_test_connect" />
 
     <ImageView
         android:id="@+id/fragment_test_qr"
@@ -85,10 +81,19 @@
         app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_test_qr_text"
-        app:layout_constraintWidth_percent="0.3"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_test_qr_valid"
+        app:layout_constraintWidth_percent="0.4"
         tools:background="@color/colorAccent" />
 
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/fragment_test_autoscroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        app:layout_constraintTop_toBottomOf="@id/fragment_test_qr"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_test_scroll"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/auto_scroll"/>
     <ScrollView
         android:id="@+id/fragment_test_scroll"
         android:layout_width="0dp"
@@ -96,7 +101,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fragment_test_qr">
+        app:layout_constraintTop_toBottomOf="@id/fragment_test_autoscroll">
 
 
         <LinearLayout

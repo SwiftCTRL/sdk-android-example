@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<ImageView
+    android:id="@+id/fragment_qr_close"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:tint="@android:color/holo_red_dark"
+    android:src="@drawable/ic_close"
+    android:padding="@dimen/spacing_large"/>
+
     <ImageView
         android:id="@+id/fragment_qr_image"
         android:layout_width="0dp"
