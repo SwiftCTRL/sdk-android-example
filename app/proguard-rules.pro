@@ -52,6 +52,8 @@
 -keep interface com.swiftctrl.sdk.SwiftCtrlFullCallback
 -dontwarn com.swiftctrl.sdk.SwiftCtrlSDK
 -keep class com.swiftctrl.sdk.SwiftCtrlSDK
+-dontwarn com.swiftctrl.sdk.SwiftCtrlSDK
+-keep class Utils
 
 -dontwarn com.google.crypto.**
 -keep class com.google.crypto.** { *; }

@@ -32,8 +32,8 @@ class QrFragment : Fragment(), SwiftCtrlCallback {
         client.registerCryptoFeed()
     }
 
-    override fun onSwiftCtrlCrypto(text: String) {
-        val bitmap = Utils.getQRFromText(requireContext(), text, android.R.color.black)
+    override fun onSwiftCtrlCrypto(text: String, content: ByteArray) {
+        val bitmap = Utils.getQRFromByteArray(requireContext(), content, android.R.color.black)
         binding.fragmentQrImage.setImageBitmap(bitmap)
     }
 

@@ -7,11 +7,17 @@ import androidx.core.content.ContextCompat
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
+import com.swiftctrl.sdk.core.toBase64
 
 object Utils {
+    @Throws(WriterException::class)
+    fun getQRFromByteArray(context: Context, value: ByteArray, @ColorRes colorId: Int = R.color.colorPrimary): Bitmap? {
+        return getQRFromText(context, value.toBase64(), colorId)
+    }
 
     @Throws(WriterException::class)
     fun getQRFromText(context: Context, value: String, @ColorRes colorId: Int = R.color.colorPrimary): Bitmap? {
+
         val bitMatrix = try {
             MultiFormatWriter().encode(
                 value,

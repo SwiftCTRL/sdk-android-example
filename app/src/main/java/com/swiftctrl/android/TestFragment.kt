@@ -164,8 +164,8 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         binding.fragmentTestRegister.isEnabled = true
     }
 
-    override fun onSwiftCtrlCrypto(text: String) {
-        val bitmap = Utils.getQRFromText(requireContext(), text)
+    override fun onSwiftCtrlCrypto(text: String, content: ByteArray) {
+        val bitmap = Utils.getQRFromByteArray(requireContext(), content)
         binding.fragmentTestQr.setImageBitmap(bitmap)
 
         client.validate(text)
