@@ -21,9 +21,9 @@ class DemoActivity : AppCompatActivity() {
         showLogin()
     }
 
-    fun showQrCode(userToken: String) {
+    fun showQrCode(userToken: String, userId:Int) {
         val fragment = QrFragment().apply {
-            this.arguments = bundleOf(Const.KEY_USER_TOKEN to userToken)
+            this.arguments = bundleOf(Const.KEY_USER_TOKEN to userToken, Const.KEY_USER_ID to userId)
         }
         supportFragmentManager.beginTransaction().replace(R.id.activity_demo_root, fragment).commit()
     }

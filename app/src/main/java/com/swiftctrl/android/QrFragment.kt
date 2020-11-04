@@ -21,6 +21,7 @@ class QrFragment : Fragment(), SwiftCtrlCallback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        binding.fragmentQrUserId.text = getString(R.string.user_id, arguments?.getInt(Const.KEY_USER_ID, 0))
         client = SwiftCtrlLifecycleClient(this, requireContext(), arguments?.getString(Const.KEY_USER_TOKEN) ?: "", this)
         binding.fragmentQrClose.setOnClickListener {
             client.unregisterCryptoFeed()

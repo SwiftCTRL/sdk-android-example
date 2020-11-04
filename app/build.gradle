@@ -27,20 +27,20 @@ android {
     buildFeatures {
         viewBinding true
     }
-    signingConfigs {
-        config {
-            keyAlias cert_key_alias
-            keyPassword cert_key_password
-            storeFile file(cert_keystore_path)
-            storePassword cert_keystore_password
-        }
-    }
+//    signingConfigs {
+//        config {
+//            keyAlias cert_key_alias
+//            keyPassword cert_key_password
+//            storeFile file(cert_keystore_path)
+//            storePassword cert_keystore_password
+//        }
+//    }
     buildTypes {
         debug {
             minifyEnabled false
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 //            signingConfig signingConfigs.config
         }

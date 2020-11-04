@@ -39,7 +39,7 @@ class LoginFragment : Fragment() {
                     it.userId,
                     object : SwiftCtrlSDK.AuthCallback {
                         override fun onSuccess(token: String) {
-                            (requireActivity() as DemoActivity).showQrCode(token)
+                            (requireActivity() as DemoActivity).showQrCode(token, it.userId)
                         }
 
                         override fun onError(e: Throwable) {
