@@ -65,7 +65,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         this.type = arguments?.getInt(Const.KEY_TYPE) ?: Const.TEST_TYPE_AUTO
 
         initialState()
-        AppDependency.getToken(
+        AppDependency(userId).getToken(
             requireContext(), getString(R.string.license), getString(R.string.secret), userId,
             object : SwiftCtrlSDK.AuthCallback {
                 override fun onSuccess(token: String) {

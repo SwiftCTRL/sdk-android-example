@@ -7,11 +7,11 @@ import com.swiftctrl.sdk.SwiftCtrlSDK
 import java.util.*
 import kotlin.reflect.KClass
 
-object AppDependency {
+class AppDependency(private val userId:Int) {
     private val store = WeakHashMap<KClass<*>, Any>()
 
     private fun getSharedPreference(context: Context) =
-        store.getOrPut(SharedPreferences::class, { context.getSharedPreferences("app", Context.MODE_PRIVATE) }) as SharedPreferences
+        store.getOrPut(SharedPreferences::class, { context.getSharedPreferences("app_${userId}", Context.MODE_PRIVATE) }) as SharedPreferences
 
     fun getToken(context: Context, license: String, secret: String, userId: Int, callback: SwiftCtrlSDK.AuthCallback) {
         getSharedPreference(context).getString(Const.KEY_USER_TOKEN, null)?.let { userToken ->

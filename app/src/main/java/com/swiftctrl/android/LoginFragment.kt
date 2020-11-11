@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.swiftctrl.android.databinding.FragmentLoginBinding
 import com.swiftctrl.sdk.SwiftCtrlSDK
+import java.util.*
 
 class LoginFragment : Fragment() {
 
@@ -16,6 +17,7 @@ class LoginFragment : Fragment() {
     data class Account(val username: String, val password: String, val license: String, val secret: String, val userId: Int)
 
     private lateinit var accounts: Map<String, Account>
+    private val dependencies = WeakHashMap<Account, AppDependency>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentLoginBinding.inflate(layoutInflater, container, false)
@@ -32,7 +34,7 @@ class LoginFragment : Fragment() {
             val username = binding.fragmentLoginUsername.text.toString()
             val password = binding.fragmentLoginPassword.text.toString()
             getAccount(username, password)?.let {
-                AppDependency.getToken(
+                dependencies.getOrPut(it, {AppDependency(it.userId)}).getToken(
                     requireContext(),
                     it.license,
                     it.secret,
