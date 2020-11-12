@@ -19,6 +19,8 @@ import com.swiftctrl.sdk.SwiftCtrlSDK
 import com.swiftctrl.sdk.connector.SwiftCtrlClient
 import com.swiftctrl.sdk.connector.SwiftCtrlLifecycleClient
 import com.swiftctrl.sdk.connector.SwiftCtrlManualClient
+import com.swiftctrl.sdk.core.toBase64
+import net.glxn.qrgen.android.QRCode
 import timber.log.Timber
 import java.util.*
 
@@ -165,8 +167,10 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
     }
 
     override fun onSwiftCtrlCrypto(text: String, content: ByteArray) {
-        val bitmap = Utils.getQRFromByteArray(requireContext(), content)
-        binding.fragmentTestQr.setImageBitmap(bitmap)
+        binding.fragmentTestQr.post {
+            val imageSize = binding.fragmentTestQr.width
+            binding.fragmentTestQr.setImageBitmap(QRCode.from(content.toBase64()).withSize(imageSize, imageSize).bitmap())
+        }
 
         client.validate(text)
     }

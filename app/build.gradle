@@ -40,7 +40,7 @@ android {
             minifyEnabled false
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
@@ -110,8 +110,8 @@ dependencies {
     implementation "com.quicklib:quicklib-app:$quicklibVersion"
 
     // QR Codes
-    // implementation "com.github.kenglxn.QRGen:javase:2.6.0"
-    implementation "com.google.zxing:core:3.3.0"
+    implementation "com.github.kenglxn.QRGen:android:2.6.0"
+
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
