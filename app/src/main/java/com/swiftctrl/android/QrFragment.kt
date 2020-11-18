@@ -1,6 +1,5 @@
 package com.swiftctrl.android
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +10,8 @@ import com.swiftctrl.sdk.SwiftCtrlCallback
 import com.swiftctrl.sdk.connector.SwiftCtrlClient
 import com.swiftctrl.sdk.connector.SwiftCtrlLifecycleClient
 import com.swiftctrl.sdk.core.toBase64
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import net.glxn.qrgen.android.QRCode
-import net.glxn.qrgen.core.image.ImageType
+import timber.log.Timber
 
 class QrFragment : Fragment(), SwiftCtrlCallback {
 
@@ -28,7 +24,7 @@ class QrFragment : Fragment(), SwiftCtrlCallback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        binding.fragmentQrImage.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        binding.fragmentQrImage.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         binding.fragmentQrUserId.text = getString(R.string.user_id, arguments?.getInt(Const.KEY_USER_ID, 0))
         client = SwiftCtrlLifecycleClient(this, requireContext(), arguments?.getString(Const.KEY_USER_TOKEN) ?: "", this)
         binding.fragmentQrClose.setOnClickListener {
@@ -47,9 +43,9 @@ class QrFragment : Fragment(), SwiftCtrlCallback {
             val imageSize = binding.fragmentQrImage.width
             binding.fragmentQrImage.setImageBitmap(QRCode.from(content.toBase64()).withSize(imageSize, imageSize).bitmap())
         }
-//        binding.fragmentQrImage.setImageBitmap(QRCode.from(content.toBase64()).bitmap())
     }
 
     override fun onSwiftCtrlError(test: String, e: Exception?) {
+        Timber.e(e, test)
     }
 }

@@ -139,7 +139,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         initialState()
     }
 
-    override fun onQrValidated(valid: Boolean) {
+    override fun onSwiftCtrlQrCheck(valid: Boolean) {
         val color = if (valid) {
             binding.fragmentTestQrValid.text = getString(R.string.qr_valid)
             binding.fragmentTestQrValid.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_thumb_up, 0)
