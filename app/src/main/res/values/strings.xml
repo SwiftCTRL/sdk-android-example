@@ -20,7 +20,7 @@
     <string name="login">Login</string>
     <string name="error_authentication">Unable to authenticate your account</string>
     <string name="error_credentials">Wrong username/password</string>
-    <string name="user_id">userId=%d</string>
+    <string name="user_id">userId=%s</string>
     <string name="qr_valid">QR Code is valid</string>
     <string name="qr_not_valid">QR Code is not valid</string>
     <string name="auto_scroll">Auto Scroll</string>

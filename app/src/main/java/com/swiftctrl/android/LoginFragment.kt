@@ -14,7 +14,7 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
 
-    data class Account(val username: String, val password: String, val license: String, val secret: String, val userId: Int)
+    data class Account(val username: String, val password: String, val license: String, val secret: String, val userId: String)
 
     private lateinit var accounts: Map<String, Account>
     private val dependencies = HashMap<Account, AppDependency>()
@@ -27,8 +27,8 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         accounts = mapOf<String, Account>(
-            "demo" to Account("demo", "1234", getString(R.string.license), getString(R.string.secret), 2345),
-            "demo2" to Account("demo2", "5678", getString(R.string.license2), getString(R.string.secret2), 2346)
+            "demo" to Account("demo", "1234", getString(R.string.license), getString(R.string.secret), "khaled@swiftctrl.com"),
+            "demo2" to Account("demo2", "5678", getString(R.string.license2), getString(R.string.secret2), "khaled@swiftctrl.com")
         )
         binding.fragmentLoginSubmit.setOnClickListener {
             val username = binding.fragmentLoginUsername.text.toString()

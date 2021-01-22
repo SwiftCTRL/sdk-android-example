@@ -27,9 +27,9 @@ import java.util.*
 class TestFragment : Fragment(), SwiftCtrlFullCallback {
 
     private var autoScroll = true
-    private val userId = 37
+    private val userId = "khaled@swiftctrl.com"
     private var type: Int = Const.TEST_TYPE_AUTO
-    private lateinit var client: SwiftCtrlClient
+    private var client: SwiftCtrlClient? = null
     private lateinit var binding: FragmentTestBinding
     private val tree = object : Timber.Tree() {
         override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
@@ -75,7 +75,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
                     if (type == Const.TEST_TYPE_MANUAL) {
                         client = SwiftCtrlManualClient(requireContext(), token, this@TestFragment)
                         binding.fragmentTestConnect.setOnClickListener {
-                            if (client.isConnected()) {
+                            if (client?.isConnected() == true) {
                                 (client as SwiftCtrlManualClient).disconnect()
                             } else {
                                 (client as SwiftCtrlManualClient).connect()
@@ -84,7 +84,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
                     } else {
                         client = SwiftCtrlLifecycleClient(this@TestFragment, token, this@TestFragment)
                     }
-                    binding.fragmentTestType.text = client::class.java.simpleName
+                    binding.fragmentTestType.text = SwiftCtrlClient::class.java.simpleName
                     binding.fragmentTestConnect.isEnabled = true
                 }
 
@@ -98,9 +98,9 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         binding.fragmentTestUserid.text = getString(R.string.user_id, userId)
         binding.fragmentTestRegister.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                client.registerCryptoFeed()
+                client?.registerCryptoFeed()
             } else {
-                client.unregisterCryptoFeed()
+                client?.unregisterCryptoFeed()
             }
         }
         binding.fragmentTestAutoscroll.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -153,6 +153,9 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
         TextViewCompat.setCompoundDrawableTintList(binding.fragmentTestQrValid, ColorStateList.valueOf(color))
     }
 
+    override fun onSwiftCtrlQrNotFound() {
+    }
+
     override fun onSwiftCtrlConnecting() {
         binding.fragmentTestConnect.iconTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark))
         binding.fragmentTestConnect.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_orange_dark))
@@ -172,7 +175,7 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
             binding.fragmentTestQr.setImageBitmap(QRCode.from(content.toBase64()).withSize(imageSize, imageSize).bitmap())
         }
 
-        client.validate(text)
+        client?.validate(text)
     }
 
     override fun onSwiftCtrlError(test: String, e: Exception?) {
@@ -186,8 +189,10 @@ class TestFragment : Fragment(), SwiftCtrlFullCallback {
 
     override fun onStop() {
         super.onStop()
-        if (client is SwiftCtrlManualClient) {
-            (client as SwiftCtrlManualClient).disconnect()
+        client?.let {
+            if (it is SwiftCtrlManualClient) {
+                it.disconnect()
+            }
         }
         Timber.uproot(tree)
     }

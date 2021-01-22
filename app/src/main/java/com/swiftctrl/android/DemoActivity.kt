@@ -21,7 +21,7 @@ class DemoActivity : AppCompatActivity() {
         showLogin()
     }
 
-    fun showQrCode(userToken: String, userId: Int) {
+    fun showQrCode(userToken: String, userId: String) {
         val fragment = QrFragment().apply {
             this.arguments = bundleOf(Const.KEY_USER_TOKEN to userToken, Const.KEY_USER_ID to userId)
         }

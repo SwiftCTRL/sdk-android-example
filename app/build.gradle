@@ -38,6 +38,7 @@ android {
     buildTypes {
         debug {
             minifyEnabled false
+            debuggable true
         }
         release {
             minifyEnabled true
@@ -49,6 +50,10 @@ android {
 configurations {
     ktlint
 }
+configurations.all {
+    // Check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -57,7 +62,7 @@ dependencies {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // SWIFTCTRL SDK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    implementation "com.swiftctrl:swiftctrl-sdk:1.0.0"
+    implementation ("com.swiftctrl:swiftctrl-sdk:1.0.0"){ changing = true }
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,6 +137,7 @@ dependencies {
     // Unit
     testImplementation 'junit:junit:4.12'
 }
+
 
 // KT lint tasks------------------------------------------------------------------------------------
 task ktlint(type: JavaExec, group: "verification") {

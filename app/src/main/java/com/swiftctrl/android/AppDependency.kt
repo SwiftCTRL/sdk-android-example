@@ -7,13 +7,13 @@ import com.swiftctrl.sdk.SwiftCtrlSDK
 import java.util.*
 import kotlin.reflect.KClass
 
-class AppDependency(private val userId: Int) {
+class AppDependency(private val userId: String) {
     private val store = WeakHashMap<KClass<*>, Any>()
 
     private fun getSharedPreference(context: Context) =
         store.getOrPut(SharedPreferences::class, { context.getSharedPreferences("app_$userId", Context.MODE_PRIVATE) }) as SharedPreferences
 
-    fun getToken(context: Context, license: String, secret: String, userId: Int, callback: SwiftCtrlSDK.AuthCallback) {
+    fun getToken(context: Context, license: String, secret: String, userId: String, callback: SwiftCtrlSDK.AuthCallback) {
         getSharedPreference(context).getString(Const.KEY_USER_TOKEN, null)?.let { userToken ->
             if (isCloseToExpire(userToken)) {
                 SwiftCtrlSDK.refreshUserToken(
@@ -57,7 +57,7 @@ class AppDependency(private val userId: Int) {
         }
     }
 
-    private fun createUserToken(context: Context, systemToken: String, userId: Int, callback: SwiftCtrlSDK.AuthCallback) {
+    private fun createUserToken(context: Context, systemToken: String, userId: String, callback: SwiftCtrlSDK.AuthCallback) {
         SwiftCtrlSDK.createUserToken(
             systemToken, userId,
             object : SwiftCtrlSDK.AuthCallback {
@@ -73,7 +73,7 @@ class AppDependency(private val userId: Int) {
         )
     }
 
-    private fun createSystemToken(context: Context, license: String, secret: String, userId: Int, callback: SwiftCtrlSDK.AuthCallback) {
+    private fun createSystemToken(context: Context, license: String, secret: String, userId: String, callback: SwiftCtrlSDK.AuthCallback) {
         SwiftCtrlSDK.createSystemToken(
             license, secret,
             object : SwiftCtrlSDK.AuthCallback {
